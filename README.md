@@ -1,14 +1,6 @@
-# HEIC Converter
+# HEIC to JPG converter
 
 纯前端 HEIC / HEIF 转 JPG、JPEG、PNG 的静态网页应用。
-
-## 在线能力
-
-- 中文核心关键词：HEIC转JPG / HEIC转JGP
-- English keyword: HEIC to JPG
-- Korean keyword: heic 변환
-- 多语言页面：中文、English、日本語、Deutsch、Français、Español、繁體中文、한국어
-- 纯浏览器端转换，不上传用户图片到服务器
 
 ## 功能
 
@@ -42,10 +34,6 @@ http://127.0.0.1:4173
 - 浏览器 File System Access API 目前主要由 Chromium 系浏览器支持；不支持时会使用 ZIP 下载。
 - HEIF/HEIC 元数据结构存在设备和厂商差异，EXIF 保留是 best-effort，不等同于专业桌面工具的完整容器级元数据迁移。
 - 浏览器 Canvas 导出的 PNG 不暴露压缩级别控制；界面里的压缩等级用于 ZIP 批量包。
-
-## SEO 部署备注
-
-上线后建议把各页面的 `canonical` 和 `sitemap.xml` 中的地址替换为正式域名下的绝对 URL。
 
 ## GitHub Pages
 
