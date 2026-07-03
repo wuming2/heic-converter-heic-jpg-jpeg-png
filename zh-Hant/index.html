@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HEIC Converter - 免費 HEIC 轉 JPG、JPEG、PNG</title>
+    <meta name="description" content="免費 HEIC Converter，在瀏覽器本地批次將 HEIC/HEIF 轉為 JPG、JPEG、PNG。支援 EXIF 清除、元資料處理與 ZIP 下載。" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta property="og:title" content="HEIC Converter - 線上 HEIC 轉 JPG、PNG" />
+    <meta property="og:description" content="免費 HEIC Converter，在瀏覽器本地批次將 HEIC/HEIF 轉為 JPG、JPEG、PNG。支援 EXIF 清除、元資料處理與 ZIP 下載。" />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="./index.html" />
+    <link rel="alternate" hreflang="zh-CN" href="../index.html" />
+    <link rel="alternate" hreflang="zh-Hant" href="../zh-Hant/" />
+    <link rel="alternate" hreflang="en" href="../en/" />
+    <link rel="alternate" hreflang="ja" href="../ja/" />
+    <link rel="alternate" hreflang="ko" href="../ko/" />
+    <link rel="alternate" hreflang="de" href="../de/" />
+    <link rel="alternate" hreflang="fr" href="../fr/" />
+    <link rel="alternate" hreflang="es" href="../es/" />
+    <link rel="alternate" hreflang="x-default" href="../index.html" />
+    <link rel="stylesheet" href="../styles.css" />
+    <script src="../vendor/lucide.min.js" defer></script>
+    <script src="../vendor/heic-to.iife.js" defer></script>
+    <script src="../vendor/heic2any.min.js" defer></script>
+    <script src="../vendor/piexif.min.js" defer></script>
+    <script src="../vendor/jszip.min.js" defer></script>
+    <script src="../app.js?v=20260703-multilang" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace" aria-label="HEIC Converter">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Local browser conversion</p>
+            <h1>HEIC Converter</h1>
+          </div>
+          <div class="topbar-actions">
+            <details class="language-menu">
+    <summary><i data-lucide="languages"></i>繁體中文</summary>
+    <div class="language-list">
+      <a href="../index.html" lang="zh-CN">简体中文</a><a href="../zh-Hant/" lang="zh-Hant" aria-current="page">繁體中文</a><a href="../en/" lang="en">English</a><a href="../ja/" lang="ja">日本語</a><a href="../ko/" lang="ko">한국어</a><a href="../de/" lang="de">Deutsch</a><a href="../fr/" lang="fr">Français</a><a href="../es/" lang="es">Español</a>
+    </div>
+  </details>
+            <a class="nav-link" href="../heic-to-jpg.html">HEIC 轉 JPG</a>
+            <a class="nav-link" href="../heic-to-png.html">HEIC 轉 PNG</a>
+            <button class="icon-button" id="pickDirectory" type="button" title="選擇儲存資料夾" aria-label="選擇儲存資料夾"><i data-lucide="folder-open"></i></button>
+            <button class="icon-button" id="clearAll" type="button" title="清空佇列" aria-label="清空佇列"><i data-lucide="trash-2"></i></button>
+          </div>
+        </header>
+        <div class="main-grid">
+          <section class="dropzone" id="dropzone" aria-label="加入檔案">
+            <input id="fileInput" type="file" accept=".heic,.heif,image/heic,image/heif" multiple />
+            <div class="drop-icon"><i data-lucide="image-plus"></i></div>
+            <h2>拖入 HEIC / HEIF 檔案</h2>
+            <p>或點擊選擇檔案，支援批次轉換，全部在本地瀏覽器完成。</p>
+            <button class="primary-button" type="button" id="pickFiles"><i data-lucide="plus"></i>加入檔案</button>
+          </section>
+          <aside class="settings" aria-label="轉換設定">
+            <div class="field-group">
+              <label for="format">輸出格式</label>
+              <select id="format">
+                <option value="png" selected>PNG - 無損像素輸出</option>
+                <option value="jpeg">JPEG - 高相容性</option>
+                <option value="jpg">JPG - 高相容性</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <div class="label-row"><label for="quality">JPEG 品質</label><output id="qualityValue" for="quality">100%</output></div>
+              <input id="quality" type="range" min="0.4" max="1" step="0.01" value="1" />
+            </div>
+            <div class="field-group">
+              <div class="label-row"><label for="pngCompression">ZIP 壓縮等級</label><output id="pngCompressionValue" for="pngCompression">6</output></div>
+              <input id="pngCompression" type="range" min="0" max="9" step="1" value="6" />
+            </div>
+            <label class="switch-row"><span><strong>EXIF 清除</strong><small>開啟後不寫入可識別原始元資料</small></span><input id="stripExif" type="checkbox" /></label>
+            <div class="save-target" id="saveTarget"><i data-lucide="hard-drive"></i><span>未選擇資料夾，將下載為 ZIP</span></div>
+            <button class="convert-button" id="convertAll" type="button" disabled><i data-lucide="wand-sparkles"></i>開始轉換</button>
+          </aside>
+        </div>
+        <section class="queue-section" aria-label="轉換佇列">
+          <div class="section-heading"><h2>轉換佇列</h2><span id="queueSummary">0 個檔案</span></div>
+          <div class="queue" id="queue"><div class="empty-state"><i data-lucide="files"></i><p>加入檔案後會顯示轉換狀態、元資料處理和輸出大小。</p></div></div>
+        </section>
+      </section>
+      <section class="app-promo" aria-label="Android App">
+        <div class="app-promo-icon"><i data-lucide="smartphone"></i></div>
+        <div class="app-promo-copy"><p class="eyebrow">Android open source app</p><h2>也可以在 Android 上使用 HEIC 轉 JPG App</h2><p>如果你常在手機端處理圖片，可以試試開源 Android 版本，快速完成 HEIC 轉 JPG。</p></div>
+        <a class="secondary-button" href="https://github.com/wuming2/Heic-converter-Android" target="_blank" rel="noopener noreferrer"><i data-lucide="code-2"></i>查看開源專案</a>
+      </section>
+      <section class="seo-content" aria-label="HEIC guide">
+        <div class="seo-intro"><p class="eyebrow">HEIC to JPG / JPEG / PNG</p><h2>快速、安全的瀏覽器端 HEIC 圖片轉換工具</h2><p>將 iPhone HEIC/HEIF 照片轉成更通用的 JPG、JPEG 或 PNG，轉換流程在本地瀏覽器完成。</p></div>
+        <div class="feature-grid">
+          <article class="info-card"><i data-lucide="layers-3"></i><h3>批次處理</h3><p>一次加入多張 HEIC/HEIF 圖片，查看狀態、輸出大小與元資料處理。</p></article>
+          <article class="info-card"><i data-lucide="shield-check"></i><h3>本地轉換</h3><p>不需要上傳伺服器，瀏覽器直接完成解碼與匯出。</p></article>
+          <article class="info-card"><i data-lucide="sliders-horizontal"></i><h3>可控輸出</h3><p>PNG 保留解碼後像素品質，也可選 JPEG/JPG 並調整品質。</p></article>
+          <article class="info-card"><i data-lucide="badge-check"></i><h3>EXIF 選項</h3><p>可清除 EXIF；關閉時會盡量保留可識別資訊。</p></article>
+        </div>
+        <div class="content-grid">
+          <article><h2>什麼時候選 JPG、JPEG 或 PNG？</h2><p>表單、郵件與 Windows/Android 相容性通常選 JPG/JPEG；重視品質或後續編輯則選 PNG。</p></article>
+          <article><h2>為什麼要清除 EXIF？</h2><p>EXIF 可能包含設備、時間、方向、鏡頭甚至位置資料。公開分享前建議清除。</p></article>
+        </div>
+        <section class="faq-section" aria-label="常見問題">
+          <h2>常見問題</h2>
+          <details><summary>HEIC 檔案會上傳到伺服器嗎？</summary><p>不會。此工具在瀏覽器本地處理檔案。</p></details>
+          <details><summary>HEIC 轉 JPG 是無損嗎？</summary><p>JPG/JPEG 需要重新編碼，不是嚴格無損；PNG 會無損保存解碼後像素。</p></details>
+          <details><summary>為什麼資料夾儲存只支援部分瀏覽器？</summary><p>它依賴 File System Access API；不支援時會改用 ZIP 下載。</p></details>
+        </section>
+        <nav class="link-panel" aria-label="相關頁面">
+          <a href="../index.html" lang="zh-CN">簡體中文</a>
+          <a href="../ko/" lang="ko">韓文</a>
+          <a href="../heic-to-jpg.html">HEIC to JPG</a>
+          <a href="../privacy.html">Privacy</a>
+        </nav>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <span>HEIC Converter</span>
+      <a href="./index.html">繁體中文</a>
+      <a href="../index.html" lang="zh-CN">簡體中文</a>
+      <a href="../ko/" lang="ko">韓文</a>
+      <a href="https://github.com/wuming2/Heic-converter-Android" target="_blank" rel="noopener noreferrer">Android App</a>
+    </footer>
+  </body>
+</html>

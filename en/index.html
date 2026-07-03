@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HEIC to JPG Converter - Free HEIC to JPG, JPEG, PNG</title>
+    <meta name="description" content="Free HEIC to JPG converter. Convert HEIC/HEIF images to JPG, JPEG, or PNG in your browser with batch conversion, EXIF cleaning, metadata handling, and ZIP downloads." />
+    <meta name="keywords" content="HEIC to JPG,HEIC to JPEG,HEIC to PNG,HEIC converter,convert HEIC to JPG" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta property="og:title" content="HEIC to JPG Converter - Online HEIC to JPG and PNG" />
+    <meta property="og:description" content="Free HEIC to JPG converter. Convert HEIC/HEIF images to JPG, JPEG, or PNG in your browser with batch conversion, EXIF cleaning, metadata handling, and ZIP downloads." />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="./index.html" />
+    <link rel="alternate" hreflang="zh-CN" href="../index.html" />
+    <link rel="alternate" hreflang="zh-Hant" href="../zh-Hant/" />
+    <link rel="alternate" hreflang="en" href="../en/" />
+    <link rel="alternate" hreflang="ja" href="../ja/" />
+    <link rel="alternate" hreflang="ko" href="../ko/" />
+    <link rel="alternate" hreflang="de" href="../de/" />
+    <link rel="alternate" hreflang="fr" href="../fr/" />
+    <link rel="alternate" hreflang="es" href="../es/" />
+    <link rel="alternate" hreflang="x-default" href="../index.html" />
+    <link rel="stylesheet" href="../styles.css" />
+    <script src="../vendor/lucide.min.js" defer></script>
+    <script src="../vendor/heic-to.iife.js" defer></script>
+    <script src="../vendor/heic2any.min.js" defer></script>
+    <script src="../vendor/piexif.min.js" defer></script>
+    <script src="../vendor/jszip.min.js" defer></script>
+    <script src="../app.js?v=20260703-multilang" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace" aria-label="HEIC Converter">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">HEIC to JPG local conversion</p>
+            <h1>HEIC Converter</h1>
+          </div>
+          <div class="topbar-actions">
+            <details class="language-menu">
+    <summary><i data-lucide="languages"></i>English</summary>
+    <div class="language-list">
+      <a href="../index.html" lang="zh-CN">简体中文</a><a href="../zh-Hant/" lang="zh-Hant">繁體中文</a><a href="../en/" lang="en" aria-current="page">English</a><a href="../ja/" lang="ja">日本語</a><a href="../ko/" lang="ko">한국어</a><a href="../de/" lang="de">Deutsch</a><a href="../fr/" lang="fr">Français</a><a href="../es/" lang="es">Español</a>
+    </div>
+  </details>
+            <a class="nav-link" href="../heic-to-jpg.html">HEIC to JPG</a>
+            <a class="nav-link" href="../heic-to-png.html">HEIC to PNG</a>
+            <button class="icon-button" id="pickDirectory" type="button" title="Choose save folder" aria-label="Choose save folder"><i data-lucide="folder-open"></i></button>
+            <button class="icon-button" id="clearAll" type="button" title="Clear queue" aria-label="Clear queue"><i data-lucide="trash-2"></i></button>
+          </div>
+        </header>
+        <div class="main-grid">
+          <section class="dropzone" id="dropzone" aria-label="Add files">
+            <input id="fileInput" type="file" accept=".heic,.heif,image/heic,image/heif" multiple />
+            <div class="drop-icon"><i data-lucide="image-plus"></i></div>
+            <h2>Drop HEIC / HEIF files here</h2>
+            <p>Or choose files. Batch conversion runs locally in your browser.</p>
+            <button class="primary-button" type="button" id="pickFiles"><i data-lucide="plus"></i>Add files</button>
+          </section>
+          <aside class="settings" aria-label="Conversion settings">
+            <div class="field-group">
+              <label for="format">Output format</label>
+              <select id="format">
+                <option value="png" selected>PNG - lossless pixel output</option>
+                <option value="jpeg">JPEG - high compatibility</option>
+                <option value="jpg">JPG - high compatibility</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <div class="label-row"><label for="quality">JPEG quality</label><output id="qualityValue" for="quality">100%</output></div>
+              <input id="quality" type="range" min="0.4" max="1" step="0.01" value="1" />
+            </div>
+            <div class="field-group">
+              <div class="label-row"><label for="pngCompression">ZIP compression level</label><output id="pngCompressionValue" for="pngCompression">6</output></div>
+              <input id="pngCompression" type="range" min="0" max="9" step="1" value="6" />
+            </div>
+            <label class="switch-row"><span><strong>Clean EXIF</strong><small>Do not write identifiable original metadata</small></span><input id="stripExif" type="checkbox" /></label>
+            <div class="save-target" id="saveTarget"><i data-lucide="hard-drive"></i><span>No folder selected. A ZIP will be downloaded</span></div>
+            <button class="convert-button" id="convertAll" type="button" disabled><i data-lucide="wand-sparkles"></i>Start conversion</button>
+          </aside>
+        </div>
+        <section class="queue-section" aria-label="Conversion queue">
+          <div class="section-heading"><h2>Conversion queue</h2><span id="queueSummary">0 files</span></div>
+          <div class="queue" id="queue"><div class="empty-state"><i data-lucide="files"></i><p>Added files will show conversion status, metadata handling, and output size.</p></div></div>
+        </section>
+      </section>
+      <section class="app-promo" aria-label="Android App">
+        <div class="app-promo-icon"><i data-lucide="smartphone"></i></div>
+        <div class="app-promo-copy"><p class="eyebrow">Android open source app</p><h2>Use the open-source HEIC to JPG app on Android</h2><p>If you often process images on your phone, try the Android version. It is useful when you need quick HEIC to JPG conversion without opening a desktop browser.</p></div>
+        <a class="secondary-button" href="https://github.com/wuming2/Heic-converter-Android" target="_blank" rel="noopener noreferrer"><i data-lucide="code-2"></i>View open source project</a>
+      </section>
+      <section class="seo-content" aria-label="HEIC guide">
+        <div class="seo-intro"><p class="eyebrow">HEIC to JPG / JPEG / PNG</p><h2>Fast, private HEIC to JPG conversion in your browser</h2><p>Use this HEIC to JPG converter to turn iPhone HEIC or HEIF photos into widely compatible JPG, JPEG, or PNG files. Processing happens locally in the browser.</p></div>
+        <div class="feature-grid">
+          <article class="info-card"><i data-lucide="layers-3"></i><h3>Batch processing</h3><p>Add multiple HEIC/HEIF images and track status, output size, and metadata handling.</p></article>
+          <article class="info-card"><i data-lucide="shield-check"></i><h3>Local conversion</h3><p>Files are decoded and exported in your browser without a server upload flow.</p></article>
+          <article class="info-card"><i data-lucide="sliders-horizontal"></i><h3>Output control</h3><p>PNG keeps decoded pixels lossless; JPEG/JPG lets you tune quality.</p></article>
+          <article class="info-card"><i data-lucide="badge-check"></i><h3>EXIF options</h3><p>Clean EXIF before sharing, or preserve recognizable EXIF when needed.</p></article>
+        </div>
+        <div class="content-grid">
+          <article><h2>When should I choose JPG, JPEG, or PNG?</h2><p>JPG/JPEG is best for uploads, forms, email, and Windows or Android compatibility. PNG is better when pixel quality or later editing matters.</p></article>
+          <article><h2>Why clean EXIF?</h2><p>EXIF can contain device, date, orientation, lens, and sometimes location data. Cleaning it helps before public sharing.</p></article>
+        </div>
+        <section class="faq-section" aria-label="FAQ">
+          <h2>FAQ</h2>
+          <details><summary>Are HEIC files uploaded to a server?</summary><p>No. This static app processes files locally in your browser.</p></details>
+          <details><summary>Is HEIC to JPG lossless?</summary><p>JPG/JPEG is re-encoded, so it is not strictly lossless. The default PNG output preserves decoded pixels losslessly.</p></details>
+          <details><summary>Why does folder saving work only in some browsers?</summary><p>Folder selection relies on the File System Access API. Unsupported browsers use ZIP download instead.</p></details>
+        </section>
+        <nav class="link-panel" aria-label="Related pages">
+          <a href="../index.html" lang="zh-CN">Chinese</a>
+          <a href="../ko/" lang="ko">Korean</a>
+          <a href="../heic-to-jpg.html">HEIC to JPG</a>
+          <a href="../privacy.html">Privacy</a>
+        </nav>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <span>HEIC Converter</span>
+      <a href="./index.html">English</a>
+      <a href="../index.html" lang="zh-CN">Chinese</a>
+      <a href="../ko/" lang="ko">Korean</a>
+      <a href="https://github.com/wuming2/Heic-converter-Android" target="_blank" rel="noopener noreferrer">Android App</a>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>隐私说明 - HEIC Converter 本地转换</title>
+    <meta
+      name="description"
+      content="HEIC Converter 是纯 Web 前端转换工具，文件在浏览器本地处理。了解 EXIF 清洗、本地保存和浏览器兼容性。"
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="./privacy.html" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Privacy first</p>
+          <h1>隐私与本地转换</h1>
+        </div>
+        <div class="topbar-actions">
+          <a class="nav-link" href="./index.html">返回转换工具</a>
+          <a class="nav-link" href="./heic-to-jpg.html">HEIC 转 JPG</a>
+          <a class="nav-link" href="./heic-to-png.html">HEIC 转 PNG</a>
+        </div>
+      </header>
+
+      <article class="article-page">
+        <p>
+          HEIC Converter 的核心转换流程在浏览器内完成。你选择的 HEIC/HEIF 文件会被本地读取、解码并导出，
+          当前静态版本没有设计上传服务器的流程。
+        </p>
+
+        <h2>EXIF 清洗</h2>
+        <p>
+          EXIF 可能包含拍摄时间、设备型号、方向、镜头参数和位置相关信息。公开分享图片前，建议开启
+          EXIF 清洗。若你需要保留摄影工作流信息，可以关闭清洗开关，工具会尽量保留可识别 EXIF。
+        </p>
+
+        <h2>保存路径</h2>
+        <p>
+          Chromium 系浏览器支持目录选择保存；不支持该 API 的浏览器会降级为 ZIP 下载，避免阻塞批量处理。
+        </p>
+
+        <nav class="link-panel" aria-label="相关链接">
+          <a href="./index.html">打开 HEIC Converter</a>
+          <a href="./heic-to-jpg.html">HEIC 转 JPG</a>
+          <a href="./heic-to-png.html">HEIC 转 PNG</a>
+        </nav>
+      </article>
+    </main>
+  </body>
+</html>

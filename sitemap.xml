@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>./index.html</loc>
+  </url>
+  <url>
+    <loc>./ko/</loc>
+  </url>
+  <url>
+    <loc>./en/</loc>
+  </url>
+  <url>
+    <loc>./ja/</loc>
+  </url>
+  <url>
+    <loc>./de/</loc>
+  </url>
+  <url>
+    <loc>./fr/</loc>
+  </url>
+  <url>
+    <loc>./es/</loc>
+  </url>
+  <url>
+    <loc>./zh-Hant/</loc>
+  </url>
+  <url>
+    <loc>./heic-to-jpg.html</loc>
+  </url>
+  <url>
+    <loc>./heic-to-png.html</loc>
+  </url>
+  <url>
+    <loc>./privacy.html</loc>
+  </url>
+</urlset>

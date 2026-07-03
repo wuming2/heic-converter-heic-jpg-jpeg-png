@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>heic 변환 - 무료 HEIC JPG, JPEG, PNG 변환기</title>
+    <meta
+      name="description"
+      content="무료 heic 변환 도구. 브라우저에서 HEIC/HEIF 이미지를 JPG, JPEG, PNG로 일괄 변환합니다. EXIF 삭제, 메타데이터 보존, ZIP 다운로드를 지원합니다."
+    />
+    <meta name="keywords" content="heic 변환,HEIC JPG 변환,HEIC JPEG 변환,HEIC PNG 변환,HEIC 변환기" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta property="og:title" content="heic 변환 - 온라인 HEIC JPG, PNG 변환" />
+    <meta
+      property="og:description"
+      content="파일 업로드 없이 브라우저에서 heic 변환을 처리하세요. 일괄 처리, EXIF 삭제, 고품질 출력 지원."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="./index.html" />
+    <link rel="alternate" hreflang="zh-CN" href="../index.html" />
+    <link rel="alternate" hreflang="zh-Hant" href="../zh-Hant/" />
+    <link rel="alternate" hreflang="en" href="../en/" />
+    <link rel="alternate" hreflang="ja" href="../ja/" />
+    <link rel="alternate" hreflang="ko" href="./index.html" />
+    <link rel="alternate" hreflang="de" href="../de/" />
+    <link rel="alternate" hreflang="fr" href="../fr/" />
+    <link rel="alternate" hreflang="es" href="../es/" />
+    <link rel="alternate" hreflang="x-default" href="../index.html" />
+    <link rel="stylesheet" href="../styles.css" />
+    <script src="../vendor/lucide.min.js" defer></script>
+    <script src="../vendor/heic-to.iife.js" defer></script>
+    <script src="../vendor/heic2any.min.js" defer></script>
+    <script src="../vendor/piexif.min.js" defer></script>
+    <script src="../vendor/jszip.min.js" defer></script>
+    <script src="../app.js?v=20260703-multilang" defer></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "HEIC Converter",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web Browser",
+        "description": "브라우저에서 heic 변환을 수행하고 HEIC 및 HEIF 이미지를 JPG, JPEG, PNG로 바꾸는 무료 도구입니다.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "HEIC 파일이 서버로 업로드되나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "아니요. 이 도구는 브라우저에서 로컬로 이미지를 디코딩하고 변환합니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "HEIC를 JPG로 변환하면 무손실인가요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "JPG/JPEG는 다시 인코딩되므로 엄밀한 의미의 무손실은 아닙니다. 기본 PNG 출력은 디코딩된 픽셀을 무손실로 저장합니다."
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace" aria-label="HEIC 변환 작업 영역">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">heic 변환 local browser</p>
+            <h1>HEIC Converter</h1>
+          </div>
+          <div class="topbar-actions">
+            <details class="language-menu">
+              <summary><i data-lucide="languages"></i>한국어</summary>
+              <div class="language-list">
+                <a href="../index.html" lang="zh-CN">简体中文</a>
+                <a href="../zh-Hant/" lang="zh-Hant">繁體中文</a>
+                <a href="../en/" lang="en">English</a>
+                <a href="../ja/" lang="ja">日本語</a>
+                <a href="./index.html" lang="ko" aria-current="page">한국어</a>
+                <a href="../de/" lang="de">Deutsch</a>
+                <a href="../fr/" lang="fr">Français</a>
+                <a href="../es/" lang="es">Español</a>
+              </div>
+            </details>
+            <a class="nav-link" href="../heic-to-jpg.html">HEIC to JPG</a>
+            <a class="nav-link" href="../heic-to-png.html">HEIC to PNG</a>
+            <button class="icon-button" id="pickDirectory" type="button" title="저장 폴더 선택" aria-label="저장 폴더 선택">
+              <i data-lucide="folder-open"></i>
+            </button>
+            <button class="icon-button" id="clearAll" type="button" title="목록 비우기" aria-label="목록 비우기">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </div>
+        </header>
+
+        <div class="main-grid">
+          <section class="dropzone" id="dropzone" aria-label="HEIC 파일 추가">
+            <input id="fileInput" type="file" accept=".heic,.heif,image/heic,image/heif" multiple />
+            <div class="drop-icon"><i data-lucide="image-plus"></i></div>
+            <h2>HEIC / HEIF 파일을 끌어오세요</h2>
+            <p>또는 파일을 선택하세요. 여러 장을 한 번에 변환할 수 있으며 모든 처리는 브라우저에서 진행됩니다.</p>
+            <button class="primary-button" type="button" id="pickFiles">
+              <i data-lucide="plus"></i>
+              파일 추가
+            </button>
+          </section>
+
+          <aside class="settings" aria-label="변환 설정">
+            <div class="field-group">
+              <label for="format">출력 형식</label>
+              <select id="format">
+                <option value="png" selected>PNG - 무손실 픽셀 출력</option>
+                <option value="jpeg">JPEG - 높은 호환성</option>
+                <option value="jpg">JPG - 높은 호환성</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <div class="label-row">
+                <label for="quality">JPEG 품질</label>
+                <output id="qualityValue" for="quality">100%</output>
+              </div>
+              <input id="quality" type="range" min="0.4" max="1" step="0.01" value="1" />
+            </div>
+
+            <div class="field-group">
+              <div class="label-row">
+                <label for="pngCompression">ZIP 압축 수준</label>
+                <output id="pngCompressionValue" for="pngCompression">6</output>
+              </div>
+              <input id="pngCompression" type="range" min="0" max="9" step="1" value="6" />
+            </div>
+
+            <label class="switch-row">
+              <span>
+                <strong>EXIF 삭제</strong>
+                <small>켜면 식별 가능한 원본 메타데이터를 쓰지 않습니다</small>
+              </span>
+              <input id="stripExif" type="checkbox" />
+            </label>
+
+            <div class="save-target" id="saveTarget">
+              <i data-lucide="hard-drive"></i>
+              <span>저장 폴더가 선택되지 않았습니다. ZIP으로 다운로드합니다</span>
+            </div>
+
+            <button class="convert-button" id="convertAll" type="button" disabled>
+              <i data-lucide="wand-sparkles"></i>
+              변환 시작
+            </button>
+          </aside>
+        </div>
+
+        <section class="queue-section" aria-label="파일 목록">
+          <div class="section-heading">
+            <h2>변환 목록</h2>
+            <span id="queueSummary">0개 파일</span>
+          </div>
+          <div class="queue" id="queue">
+            <div class="empty-state">
+              <i data-lucide="files"></i>
+              <p>파일을 추가하면 변환 상태, 메타데이터 처리 결과, 출력 크기가 표시됩니다.</p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="app-promo" aria-label="Android 앱 소개">
+        <div class="app-promo-icon">
+          <i data-lucide="smartphone"></i>
+        </div>
+        <div class="app-promo-copy">
+          <p class="eyebrow">Android open source app</p>
+          <h2>Android에서도 HEIC to JPG 앱을 사용할 수 있습니다</h2>
+          <p>
+            휴대폰에서 바로 사진을 처리하고 싶다면 오픈소스 Android 버전을 사용해 보세요.
+            PC를 열기 어렵거나 모바일에서 빠르게 HEIC를 JPG로 바꿔야 할 때 유용합니다.
+          </p>
+        </div>
+        <a
+          class="secondary-button"
+          href="https://github.com/wuming2/Heic-converter-Android"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i data-lucide="code-2"></i>
+          오픈소스 보기
+        </a>
+      </section>
+
+      <section class="seo-content" aria-label="HEIC 변환 안내">
+        <div class="seo-intro">
+          <p class="eyebrow">heic 변환 / HEIC to JPG</p>
+          <h2>빠르고 안전한 브라우저 기반 heic 변환 도구</h2>
+          <p>
+            이 heic 변환 도구는 iPhone 사진, 앨범 이미지, 업무용 이미지를 빠르게 처리해야 하는 사용자를 위한 도구입니다.
+            HEIC 또는 HEIF 파일을 JPG, JPEG, PNG처럼 널리 쓰이는 형식으로 변환할 수 있습니다.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="info-card">
+            <i data-lucide="layers-3"></i>
+            <h3>일괄 처리</h3>
+            <p>여러 HEIC/HEIF 이미지를 한 번에 추가하고 변환 상태와 출력 크기를 확인할 수 있습니다.</p>
+          </article>
+          <article class="info-card">
+            <i data-lucide="shield-check"></i>
+            <h3>로컬 변환</h3>
+            <p>파일을 서버에 업로드하지 않고 브라우저에서 직접 디코딩, 인코딩, 다운로드합니다.</p>
+          </article>
+          <article class="info-card">
+            <i data-lucide="sliders-horizontal"></i>
+            <h3>출력 제어</h3>
+            <p>기본 PNG 출력은 디코딩된 픽셀 품질을 보존하며, JPEG/JPG 품질도 조절할 수 있습니다.</p>
+          </article>
+          <article class="info-card">
+            <i data-lucide="badge-check"></i>
+            <h3>EXIF 옵션</h3>
+            <p>EXIF 삭제를 켤 수 있으며, 끄면 인식 가능한 원본 EXIF 정보를 최대한 보존합니다.</p>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <article>
+            <h2>JPG, JPEG, PNG 중 무엇을 선택해야 하나요?</h2>
+            <p>
+              웹사이트 업로드, 문서 첨부, Windows 또는 Android 기기와의 공유에는 JPG/JPEG가 가장 무난합니다.
+              픽셀 품질이나 이후 편집이 더 중요하다면 PNG가 더 적합합니다.
+            </p>
+          </article>
+          <article>
+            <h2>EXIF 삭제가 필요한 이유</h2>
+            <p>
+              EXIF에는 촬영 기기, 시간, 방향, 렌즈 정보, 경우에 따라 위치 관련 데이터가 포함될 수 있습니다.
+              공개 공유 전에는 EXIF 삭제를 켜는 것이 좋습니다.
+            </p>
+          </article>
+        </div>
+
+        <section class="faq-section" aria-label="자주 묻는 질문">
+          <h2>자주 묻는 질문</h2>
+          <details>
+            <summary>HEIC 파일이 서버로 업로드되나요?</summary>
+            <p>아니요. 현재 버전은 순수 웹 프런트엔드로 동작하며 파일은 브라우저 안에서 처리됩니다.</p>
+          </details>
+          <details>
+            <summary>기본 무손실 변환은 어떤 의미인가요?</summary>
+            <p>기본 PNG 출력은 디코딩된 픽셀을 손실 압축 없이 저장합니다. JPG/JPEG는 다시 인코딩되므로 엄밀히 말해 무손실은 아닙니다.</p>
+          </details>
+          <details>
+            <summary>저장 폴더 선택이 일부 브라우저에서만 동작하는 이유는?</summary>
+            <p>폴더 선택은 File System Access API에 의존합니다. 지원하지 않는 브라우저에서는 ZIP 다운로드로 자동 전환됩니다.</p>
+          </details>
+        </section>
+
+        <nav class="link-panel" aria-label="관련 페이지">
+          <a href="../index.html" lang="zh-CN">중국어 버전</a>
+          <a href="../heic-to-jpg.html">HEIC to JPG 가이드</a>
+          <a href="../privacy.html">개인정보 및 로컬 변환</a>
+        </nav>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>HEIC Converter</span>
+      <a href="./index.html">한국어</a>
+      <a href="../index.html" lang="zh-CN">中文</a>
+      <a href="../heic-to-jpg.html">HEIC to JPG</a>
+      <a href="../heic-to-png.html">HEIC to PNG</a>
+      <a href="https://github.com/wuming2/Heic-converter-Android" target="_blank" rel="noopener noreferrer">Android App</a>
+    </footer>
+  </body>
+</html>

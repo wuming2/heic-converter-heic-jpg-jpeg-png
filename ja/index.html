@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HEIC Converter - 無料 HEIC JPG, JPEG, PNG 変換</title>
+    <meta name="description" content="無料 HEIC Converter。ブラウザ上で HEIC/HEIF 画像を JPG、JPEG、PNG に一括変換。EXIF 削除、メタデータ処理、ZIP ダウンロードに対応。" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta property="og:title" content="HEIC Converter - オンライン HEIC JPG, PNG 変換" />
+    <meta property="og:description" content="無料 HEIC Converter。ブラウザ上で HEIC/HEIF 画像を JPG、JPEG、PNG に一括変換。EXIF 削除、メタデータ処理、ZIP ダウンロードに対応。" />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="./index.html" />
+    <link rel="alternate" hreflang="zh-CN" href="../index.html" />
+    <link rel="alternate" hreflang="zh-Hant" href="../zh-Hant/" />
+    <link rel="alternate" hreflang="en" href="../en/" />
+    <link rel="alternate" hreflang="ja" href="../ja/" />
+    <link rel="alternate" hreflang="ko" href="../ko/" />
+    <link rel="alternate" hreflang="de" href="../de/" />
+    <link rel="alternate" hreflang="fr" href="../fr/" />
+    <link rel="alternate" hreflang="es" href="../es/" />
+    <link rel="alternate" hreflang="x-default" href="../index.html" />
+    <link rel="stylesheet" href="../styles.css" />
+    <script src="../vendor/lucide.min.js" defer></script>
+    <script src="../vendor/heic-to.iife.js" defer></script>
+    <script src="../vendor/heic2any.min.js" defer></script>
+    <script src="../vendor/piexif.min.js" defer></script>
+    <script src="../vendor/jszip.min.js" defer></script>
+    <script src="../app.js?v=20260703-multilang" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace" aria-label="HEIC Converter">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Local browser conversion</p>
+            <h1>HEIC Converter</h1>
+          </div>
+          <div class="topbar-actions">
+            <details class="language-menu">
+    <summary><i data-lucide="languages"></i>日本語</summary>
+    <div class="language-list">
+      <a href="../index.html" lang="zh-CN">简体中文</a><a href="../zh-Hant/" lang="zh-Hant">繁體中文</a><a href="../en/" lang="en">English</a><a href="../ja/" lang="ja" aria-current="page">日本語</a><a href="../ko/" lang="ko">한국어</a><a href="../de/" lang="de">Deutsch</a><a href="../fr/" lang="fr">Français</a><a href="../es/" lang="es">Español</a>
+    </div>
+  </details>
+            <a class="nav-link" href="../heic-to-jpg.html">HEIC JPG 変換</a>
+            <a class="nav-link" href="../heic-to-png.html">HEIC PNG 変換</a>
+            <button class="icon-button" id="pickDirectory" type="button" title="保存先フォルダを選択" aria-label="保存先フォルダを選択"><i data-lucide="folder-open"></i></button>
+            <button class="icon-button" id="clearAll" type="button" title="キューをクリア" aria-label="キューをクリア"><i data-lucide="trash-2"></i></button>
+          </div>
+        </header>
+        <div class="main-grid">
+          <section class="dropzone" id="dropzone" aria-label="ファイル追加">
+            <input id="fileInput" type="file" accept=".heic,.heif,image/heic,image/heif" multiple />
+            <div class="drop-icon"><i data-lucide="image-plus"></i></div>
+            <h2>HEIC / HEIF ファイルをドロップ</h2>
+            <p>またはファイルを選択してください。複数画像をブラウザ内で一括変換できます。</p>
+            <button class="primary-button" type="button" id="pickFiles"><i data-lucide="plus"></i>ファイル追加</button>
+          </section>
+          <aside class="settings" aria-label="変換設定">
+            <div class="field-group">
+              <label for="format">出力形式</label>
+              <select id="format">
+                <option value="png" selected>PNG - ピクセルを無損失で出力</option>
+                <option value="jpeg">JPEG - 高い互換性</option>
+                <option value="jpg">JPG - 高い互換性</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <div class="label-row"><label for="quality">JPEG 品質</label><output id="qualityValue" for="quality">100%</output></div>
+              <input id="quality" type="range" min="0.4" max="1" step="0.01" value="1" />
+            </div>
+            <div class="field-group">
+              <div class="label-row"><label for="pngCompression">ZIP 圧縮レベル</label><output id="pngCompressionValue" for="pngCompression">6</output></div>
+              <input id="pngCompression" type="range" min="0" max="9" step="1" value="6" />
+            </div>
+            <label class="switch-row"><span><strong>EXIF 削除</strong><small>識別可能な元メタデータを書き込みません</small></span><input id="stripExif" type="checkbox" /></label>
+            <div class="save-target" id="saveTarget"><i data-lucide="hard-drive"></i><span>保存先未選択。ZIP としてダウンロードします</span></div>
+            <button class="convert-button" id="convertAll" type="button" disabled><i data-lucide="wand-sparkles"></i>変換開始</button>
+          </aside>
+        </div>
+        <section class="queue-section" aria-label="変換キュー">
+          <div class="section-heading"><h2>変換キュー</h2><span id="queueSummary">0 ファイル</span></div>
+          <div class="queue" id="queue"><div class="empty-state"><i data-lucide="files"></i><p>ファイルを追加すると、変換状況、メタデータ処理、出力サイズが表示されます。</p></div></div>
+        </section>
+      </section>
+      <section class="app-promo" aria-label="Android App">
+        <div class="app-promo-icon"><i data-lucide="smartphone"></i></div>
+        <div class="app-promo-copy"><p class="eyebrow">Android open source app</p><h2>Android でも HEIC to JPG アプリを利用できます</h2><p>スマートフォンで画像を処理することが多い場合は、オープンソースの Android 版も便利です。</p></div>
+        <a class="secondary-button" href="https://github.com/wuming2/Heic-converter-Android" target="_blank" rel="noopener noreferrer"><i data-lucide="code-2"></i>オープンソースを見る</a>
+      </section>
+      <section class="seo-content" aria-label="HEIC guide">
+        <div class="seo-intro"><p class="eyebrow">HEIC to JPG / JPEG / PNG</p><h2>ブラウザで高速・安全に HEIC 画像を変換</h2><p>iPhone の HEIC/HEIF 写真を JPG、JPEG、PNG に変換できます。処理はブラウザ内で行われます。</p></div>
+        <div class="feature-grid">
+          <article class="info-card"><i data-lucide="layers-3"></i><h3>一括処理</h3><p>複数の HEIC/HEIF 画像を追加し、状態や出力サイズを確認できます。</p></article>
+          <article class="info-card"><i data-lucide="shield-check"></i><h3>ローカル変換</h3><p>サーバーへアップロードせず、ブラウザで直接変換します。</p></article>
+          <article class="info-card"><i data-lucide="sliders-horizontal"></i><h3>出力制御</h3><p>PNG は無損失、JPEG/JPG は品質調整に対応します。</p></article>
+          <article class="info-card"><i data-lucide="badge-check"></i><h3>EXIF オプション</h3><p>共有前に EXIF を削除、または必要に応じて保持できます。</p></article>
+        </div>
+        <div class="content-grid">
+          <article><h2>JPG、JPEG、PNG の選び方</h2><p>アップロードや Windows/Android 共有には JPG/JPEG、画質や編集を重視するなら PNG が適しています。</p></article>
+          <article><h2>EXIF 削除が必要な理由</h2><p>EXIF には撮影機器、日時、向き、場合によって位置情報が含まれます。公開前の削除がおすすめです。</p></article>
+        </div>
+        <section class="faq-section" aria-label="よくある質問">
+          <h2>よくある質問</h2>
+          <details><summary>HEIC ファイルはサーバーへアップロードされますか？</summary><p>いいえ。ファイルはブラウザ内で処理されます。</p></details>
+          <details><summary>HEIC から JPG は無損失ですか？</summary><p>JPG/JPEG は再エンコードされるため厳密には無損失ではありません。PNG はデコード後のピクセルを無損失で保存します。</p></details>
+          <details><summary>保存先フォルダ選択が一部ブラウザだけなのはなぜ？</summary><p>File System Access API に依存します。未対応ブラウザでは ZIP ダウンロードを使用します。</p></details>
+        </section>
+        <nav class="link-panel" aria-label="関連ページ">
+          <a href="../index.html" lang="zh-CN">中国語</a>
+          <a href="../ko/" lang="ko">韓国語</a>
+          <a href="../heic-to-jpg.html">HEIC to JPG</a>
+          <a href="../privacy.html">Privacy</a>
+        </nav>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <span>HEIC Converter</span>
+      <a href="./index.html">日本語</a>
+      <a href="../index.html" lang="zh-CN">中国語</a>
+      <a href="../ko/" lang="ko">韓国語</a>
+      <a href="https://github.com/wuming2/Heic-converter-Android" target="_blank" rel="noopener noreferrer">Android App</a>
+    </footer>
+  </body>
+</html>
