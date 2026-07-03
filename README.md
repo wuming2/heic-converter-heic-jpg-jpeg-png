@@ -39,6 +39,18 @@ http://127.0.0.1:4173
 
 这是一个静态站点。推送到 GitHub 后，可以在仓库 Settings -> Pages 中选择 `Deploy from a branch`，分支选择 `main`，目录选择 `/ (root)`。
 
+## 使用的开源库
+
+本项目使用并随静态文件 vendored 了以下浏览器端开源库：
+
+- [`heic-to`](https://github.com/hoppergee/heic-to) `1.5.2`：主要 HEIC / HEIF 解码库，基于 libheif / libde265 / aom 等能力构建。License: LGPL-3.0.
+- [`heic2any`](https://github.com/alexcorvi/heic2any) `0.0.4`：HEIC / HEIF 解码兜底方案。License: MIT.
+- [`piexifjs`](https://github.com/hMatoba/piexifjs) `1.0.6`：用于在 JPEG 输出中写入 EXIF 数据。License: MIT.
+- [`JSZip`](https://github.com/Stuk/jszip) `3.10.1`：用于批量转换后的 ZIP 打包下载。License: MIT OR GPL-3.0-or-later.
+- [`lucide`](https://github.com/lucide-icons/lucide) `1.21.0`：界面图标。License: ISC.
+
+更多说明见 `THIRD_PARTY_NOTICES.md`。更新依赖时请保留各 vendored 文件中的许可证头部信息。
+
 ## License
 
 MIT. Third-party browser libraries are listed in `THIRD_PARTY_NOTICES.md`.
